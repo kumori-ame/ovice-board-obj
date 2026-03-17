@@ -1,23 +1,48 @@
+---
+import "../styles/global.css";
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="ja">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>放送大学 文化祭 2026</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Kosugi+Maru&family=Mochiy+Pop+One&family=Rampart+One&family=Truculenta:opsz,wght@12..72,100..900&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
-		<slot />
+		<main>
+			<slot />
+		</main>
 	</body>
+	<footer>
+		<div class="contact-content">
+			<div>
+				<p class="ul-head">郵便</p>
+				<p>〒005-0801</p>
+				<p>北北海道札幌市北区 北17条西8丁目</p>
+				<p>北海道大学情報教育館 5F</p>
+				<p>放送大学北海道学習センター</p>
+				<p>文化祭実行委員会</p>
+			</div>
+			<div>
+				<p class="ul-head">メール</p>
+				<p class="p-10">oujhokkaido.bunkasai@gmail.com</p>
+			</div>
+		</div>
+		<p class="margin-auto pb-20">Copyright © 2026 放送大学 北海道学友会</p>
+	</footer>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+	/* global styles handled in src/styles/global.css */
 </style>

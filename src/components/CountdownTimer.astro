@@ -1,0 +1,153 @@
+---
+// src/components/CountdownTimer.astro
+interface Props {
+  targetDate: string; // e.g. "2026-09-13T00:00:00"
+  title?: string;
+  maxWidth?: string; // e.g. "800px", "100%", "500px"
+}
+
+const {
+  targetDate,
+  title = "文化祭まであと",
+  maxWidth = "800px",
+} = Astro.props;
+---
+
+<div class="timer-wrapper">
+  <div class="timer" data-target={targetDate} style={`max-width: ${maxWidth};`}>
+    <div class="timer-content">
+      <p class="timer-title fs30 mochiy-pop-one-regular">{title}</p>
+      <div class="timer-digits font-bold">
+        <div class="time-block">
+          <span class="cd_DD fs65 cd-text">--</span>
+          <span class="fs30 timer-sub">日</span>
+        </div>
+        <div class="time-block">
+          <span class="cd_HH fs65 cd-text">--</span>
+          <span class="fs30 timer-sub">時間</span>
+        </div>
+        <div class="time-block">
+          <span class="cd_MM fs65 cd-text">--</span>
+          <span class="fs30 timer-sub">分</span>
+        </div>
+        <div class="time-block">
+          <span class="cd_SS fs65 cd-text">--</span>
+          <span class="fs30 timer-sub">秒</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateTimers() {
+    const timers = document.querySelectorAll(".timer");
+    const now = new Date().getTime();
+
+    timers.forEach((timer) => {
+      const targetStr = timer.getAttribute("data-target");
+      if (!targetStr) return;
+
+      const targetDate = new Date(targetStr).getTime();
+      const distance = targetDate - now;
+
+      const ddEl = timer.querySelector(".cd_DD");
+      const hhEl = timer.querySelector(".cd_HH");
+      const mmEl = timer.querySelector(".cd_MM");
+      const ssEl = timer.querySelector(".cd_SS");
+
+      if (distance < 0) {
+        if (ddEl) ddEl.textContent = "00";
+        if (hhEl) hhEl.textContent = "00";
+        if (mmEl) mmEl.textContent = "00";
+        if (ssEl) ssEl.textContent = "00";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      if (ddEl) ddEl.textContent = days.toString().padStart(2, "0");
+      if (hhEl) hhEl.textContent = hours.toString().padStart(2, "0");
+      if (mmEl) mmEl.textContent = minutes.toString().padStart(2, "0");
+      if (ssEl) ssEl.textContent = seconds.toString().padStart(2, "0");
+    });
+  }
+
+  // Update immediately, then every second
+  updateTimers();
+  setInterval(updateTimers, 1000);
+</script>
+
+<style>
+  /* CSS adapted from fes-2024 */
+  .timer-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    margin-top: 60px; /* Slightly more margin for skew height */
+    margin-bottom: 60px;
+    box-sizing: border-box;
+    /* Removed overflow: hidden to prevent clipping of skewed corners */
+  }
+
+  .timer {
+    display: block;
+    position: relative;
+    padding: 50px 30px;
+    transform: skewY(-2.5deg); /* Slightly less aggressive skew */
+    background-color: #222;
+    color: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    width: 90%; /* Responsive width */
+    margin: 0 auto;
+  }
+
+  .timer-content {
+    transform: skewY(2.5deg); /* Corresponds to block skew */
+    text-align: center;
+    width: 100%;
+  }
+
+  .timer-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: clamp(20px, 4vw, 30px);
+    font-family: "Mochiy Pop One", sans-serif;
+    color: rgb(75, 255, 114);
+  }
+
+  .timer-digits {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .time-block {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+  }
+
+  .cd-text {
+    font-family: "Dosis", sans-serif;
+    font-size: clamp(40px, 8vw, 65px);
+    line-height: 1;
+  }
+
+  .timer-sub {
+    font-size: clamp(16px, 3vw, 30px);
+    margin-left: 5px;
+    margin-right: 15px;
+  }
+</style>
