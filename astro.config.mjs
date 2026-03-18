@@ -2,8 +2,8 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 
 export default defineConfig({
-  site: 'https://ouj-hokkaido-fes.io/fes-2026',
-  base: '/fes-2026',
+  site: 'https://kumori-ame.github.io/ovice-board-obj',
+  base: '/ovice-board-obj',
   outDir: './docs',
   integrations: [mdx()], // ← これ追加
 });
