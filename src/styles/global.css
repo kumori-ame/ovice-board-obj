@@ -33,7 +33,8 @@ footer {
 @media screen and (max-width: 600px) {
     .contact-content {
         flex-direction: column;
-        gap: 30px; /* Add spacing between elements */
+        gap: 30px;
+        /* Add spacing between elements */
     }
 }
 
@@ -45,12 +46,14 @@ footer {
 
 .ul-head {
     border-bottom: 2px solid rgba(255, 152, 17, 0.863);
-    margin-bottom: 15px; /* Added margin below the header itself */
+    margin-bottom: 15px;
+    /* Added margin below the header itself */
 }
 
 /* Added specific padding rule for elements under ul-head inside the contact blocks */
 .contact-content div p:not(.ul-head) {
-    padding-left: 20px; /* Base padding that can be adjusted */
+    padding-left: 20px;
+    /* Base padding that can be adjusted */
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -74,7 +77,6 @@ main {
     max-width: 900px;
     padding: 30px;
     box-sizing: border-box;
-    min-height: 100vh;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
