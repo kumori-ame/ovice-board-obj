@@ -17,6 +17,7 @@ const {
   <div class="timer" data-target={targetDate} style={`max-width: ${maxWidth};`}>
     <div class="timer-content">
       <p class="timer-title fs30 mochiy-pop-one-regular">{title}</p>
+      <div class="timer-status" aria-live="polite">開催中</div>
       <div class="timer-digits font-bold">
         <div class="time-block">
           <span class="cd_DD fs65 cd-text">--</span>
@@ -55,14 +56,28 @@ const {
       const hhEl = timer.querySelector(".cd_HH");
       const mmEl = timer.querySelector(".cd_MM");
       const ssEl = timer.querySelector(".cd_SS");
+      const titleEl = timer.querySelector(".timer-title");
+      const statusEl = timer.querySelector(".timer-status");
+      const digitsEl = timer.querySelector(".timer-digits");
 
-      if (distance < 0) {
-        if (ddEl) ddEl.textContent = "00";
-        if (hhEl) hhEl.textContent = "00";
-        if (mmEl) mmEl.textContent = "00";
-        if (ssEl) ssEl.textContent = "00";
+      const isExpired = distance <= 0;
+      timer.classList.toggle("is-celebrating", isExpired);
+
+      if (isExpired) {
+        if (titleEl) titleEl.textContent = "";
+        if (statusEl) {
+          statusEl.textContent = "文化祭開催中";
+          statusEl.style.display = "block";
+        }
+        if (digitsEl) digitsEl.style.display = "none";
         return;
       }
+
+      if (titleEl && titleEl.textContent === "文化祭期間中！") {
+        titleEl.textContent = "文化祭まであと";
+      }
+      if (statusEl) statusEl.style.display = "none";
+      if (digitsEl) digitsEl.style.display = "flex";
 
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
@@ -102,19 +117,57 @@ const {
     position: relative;
     padding: 50px 30px;
     transform: skewY(-2.5deg); /* Slightly less aggressive skew */
-    background-color: #222;
+    background-color: #111;
     color: white;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 4px;
     width: 90%; /* Responsive width */
     margin: 0 auto;
+    transition: all 0.35s ease;
+    overflow: hidden;
+  }
+
+  .timer::before,
+  .timer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .timer::before {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 200, 57, 0.08),
+      rgba(255, 255, 255, 0.02),
+      rgba(0, 0, 0, 0.08)
+    );
+  }
+
+  .timer::after {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .timer.is-celebrating {
+    background: linear-gradient(135deg, #141414 0%, #2d2514 100%);
+    box-shadow: 0 14px 42px rgba(0, 0, 0, 0.52), 0 0 18px rgba(255, 207, 87, 0.12);
+    border-color: rgba(255, 211, 110, 0.24);
+  }
+
+  .timer.is-celebrating::before,
+  .timer.is-celebrating::after {
+    opacity: 1;
   }
 
   .timer-content {
     transform: skewY(2.5deg); /* Corresponds to block skew */
     text-align: center;
     width: 100%;
+    position: relative;
+    z-index: 1;
   }
 
   .timer-title {
@@ -123,6 +176,21 @@ const {
     font-size: clamp(20px, 4vw, 30px);
     font-family: "Mochiy Pop One", sans-serif;
     color: rgb(75, 255, 114);
+    transition: all 0.35s ease;
+  }
+
+  .timer.is-celebrating .timer-title {
+    color: rgb(75, 255, 114);
+  }
+
+  .timer-status {
+    display: none;
+    margin: 0 auto 18px;
+    font-family: "Mochiy Pop One", sans-serif;
+    font-size: clamp(26px, 5vw, 42px);
+    letter-spacing: 0.06em;
+    color: #fffdf7;
+    text-shadow: 0 0 16px rgba(255, 255, 255, 0.8), 0 0 28px rgba(255, 204, 86, 0.38);
   }
 
   .timer-digits {
@@ -130,6 +198,12 @@ const {
     flex-wrap: wrap;
     justify-content: center;
     gap: clamp(5px, 1vw, 20px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .timer.is-celebrating .timer-digits {
+    opacity: 0.12;
+    transform: scale(0.96);
   }
 
   .time-block {
@@ -153,4 +227,5 @@ const {
     margin-left: 5px;
     margin-right: 5px;
   }
+
 </style>
