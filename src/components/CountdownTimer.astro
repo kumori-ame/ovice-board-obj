@@ -66,7 +66,12 @@ const {
       if (isExpired) {
         if (titleEl) titleEl.textContent = "";
         if (statusEl) {
-          statusEl.textContent = "文化祭開催中";
+          statusEl.innerHTML = `
+            <div class="ended-block">
+              <p class="ended-title">2026年の文化祭は無事終了しました</p>
+              <p class="ended-sub">たくさんのご参加ありがとうございました！</p>
+              <p class="ended-note">来年の開催もお楽しみに！</p>
+            </div>`;
           statusEl.style.display = "block";
         }
         if (digitsEl) digitsEl.style.display = "none";
@@ -187,10 +192,44 @@ const {
     display: none;
     margin: 0 auto 18px;
     font-family: "Mochiy Pop One", sans-serif;
-    font-size: clamp(26px, 5vw, 42px);
-    letter-spacing: 0.06em;
+    font-size: clamp(45px, 5vw, 42px);
+    letter-spacing: 0.01em;
     color: #fffdf7;
     text-shadow: 0 0 16px rgba(255, 255, 255, 0.8), 0 0 28px rgba(255, 204, 86, 0.38);
+  }
+
+  /* Ended message block */
+  .ended-block {
+    display: inline-block;
+    text-align: center;
+    padding: 14px 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+    max-width: min(860px, 90%);
+  }
+
+  .ended-title {
+    margin: 0;
+    font-size: clamp(18px, 3.4vw, 26px);
+    color: #ffd77a;
+    font-weight: 900;
+    letter-spacing: 0.01em;
+  }
+
+  .ended-sub {
+    margin: 0;
+    font-size: clamp(18px, 3.2vw, 20px);
+    color: #ffffff;
+    opacity: 0.95;
+  }
+
+  .ended-note {
+    margin: 0;
+    font-size: clamp(32px, 4.5vw, 20px);
+    color: #dfe7d9;
+    opacity: 0.9;
   }
 
   .timer-digits {
